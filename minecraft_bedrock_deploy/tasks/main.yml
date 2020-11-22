@@ -8,29 +8,6 @@
     comment: Minecraft service account
   become: true
 
-- name: Install java
-  package:
-    name: default-jdk
-    state: present
-  become: true
-
-- name: Create minecraft service
-  template:
-    src: templates/minecraft_service.j2
-    dest: "/etc/systemd/system/{{ minecraft_server_name }}_minecraft.service"
-  become: true
-
-- name: Create server start script
-  template:
-    src: templates/minecraft_service_script.j2
-    dest: "{{ minecraft_install_path }}start_{{ minecraft_server_name }}_minecraft.sh"
-    owner: "{{ service_account }}"
-    group: "{{ service_account }}"
-
-- name: reload systemd
-  command: systemctl daemon-reload
-  become: true
-
 - name: Create Folders
   file:
     state: directory
@@ -43,6 +20,41 @@
     - "{{ unpack_dir }}"
     - "{{ minecraft_install_path }}"
   become: true
+
+- name: Install java RedHat
+  yum:
+    name: java-11-openjdk
+    state: present
+  become: true
+  when: ansible_os_family == 'RedHat'
+
+- name: Install Java Debian
+  apt:
+    name: openjdk-11-jdk
+    state: present
+  become: true
+  when: ansible_os_family == 'Debian'
+
+- name: Create minecraft service
+  template:
+    src: templates/minecraft_service.j2
+    dest: "/etc/systemd/system/{{ minecraft_server_name }}_minecraft.service"
+  become: true
+  register: create_service
+
+- name: Create server start script
+  template:
+    src: templates/minecraft_service_script.j2
+    dest: "{{ minecraft_install_path }}start_{{ minecraft_server_name }}_minecraft.sh"
+    owner: "{{ service_account }}"
+    group: "{{ service_account }}"
+    mode: +x
+  become: true
+
+- name: reload systemd
+  command: systemctl daemon-reload
+  become: true
+  when: create_service.changed
 
 - name: Download Minecraft Bedrock {{ minecraft_version }}
   get_url:
@@ -57,22 +69,31 @@
     remote_src: true
 
 - name: Customize server.properties
-  include_tasks:
-    - server_properties.yml
+  include_tasks: server_properties.yml
 
 - name: Template permissions.json file
   template:
-    src: template/permissions.json.j2
+    src: templates/permissions.json.j2
     dest: "{{ unpack_dir }}permissions.json"
   when:
     - operator_accounts is defined
 
 - name: Template whitelist.json file
   template:
-    src: template/whitelist.json.j2
+    src: templates/whitelist.json.j2
     dest: "{{ unpack_dir }}/whitelist.json"
   when:
     - whitelist_accounts is defined
+
+- name: Put Minecraft files into install directory
+  copy:
+    src: "{{ unpack_dir }}"
+    dest: "{{ minecraft_install_path }}"
+    owner: minecraft
+    group: minecraft
+    remote_src: true
+    force: true
+  become: true
 
 - name: Start new minecraft service
   service:

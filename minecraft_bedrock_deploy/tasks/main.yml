@@ -1,0 +1,82 @@
+---
+# tasks file for minecraft_bedrock_deploy
+
+- name: Create minecraft user
+  user:
+    name: minecraft
+    state: present
+    comment: Minecraft service account
+  become: true
+
+- name: Install java
+  package:
+    name: default-jdk
+    state: present
+  become: true
+
+- name: Create minecraft service
+  template:
+    src: templates/minecraft_service.j2
+    dest: "/etc/systemd/system/{{ minecraft_server_name }}_minecraft.service"
+  become: true
+
+- name: Create server start script
+  template:
+    src: templates/minecraft_service_script.j2
+    dest: "{{ minecraft_install_path }}start_{{ minecraft_server_name }}_minecraft.sh"
+    owner: "{{ service_account }}"
+    group: "{{ service_account }}"
+
+- name: reload systemd
+  command: systemctl daemon-reload
+  become: true
+
+- name: Create Folders
+  file:
+    state: directory
+    path: "{{ item }}"
+    owner: "{{ service_account }}"
+    group: "{{ service_account }}"
+    mode: "0775"
+  with_items:
+    - "{{ tmp_dir }}"
+    - "{{ unpack_dir }}"
+    - "{{ minecraft_install_path }}"
+  become: true
+
+- name: Download Minecraft Bedrock {{ minecraft_version }}
+  get_url:
+    url: https://minecraft.azureedge.net/bin-linux/bedrock-server-{{ minecraft_version }}.zip
+    dest: "{{ tmp_dir }}"
+    mode: "0775"
+
+- name: Unpack Minecraft Bedrock
+  unarchive:
+    src: "{{ tmp_dir }}bedrock-server-{{ minecraft_version }}.zip"
+    dest: "{{ unpack_dir }}"
+    remote_src: true
+
+- name: Customize server.properties
+  include_tasks:
+    - server_properties.yml
+
+- name: Template permissions.json file
+  template:
+    src: template/permissions.json.j2
+    dest: "{{ unpack_dir }}permissions.json"
+  when:
+    - operator_accounts is defined
+
+- name: Template whitelist.json file
+  template:
+    src: template/whitelist.json.j2
+    dest: "{{ unpack_dir }}/whitelist.json"
+  when:
+    - whitelist_accounts is defined
+
+- name: Start new minecraft service
+  service:
+    name: "{{ minecraft_server_name }}_minecraft.service"
+    enabled: true
+    state: started
+  become: true

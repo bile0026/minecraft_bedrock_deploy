@@ -1,0 +1,55 @@
+---
+- name: Set server name
+  lineinfile:
+    path: "{{ server_properties_file }}"
+    regexp: "^server-name="
+    line: "server-name={{ minecraft_server_name }}"
+
+- name: Set max-players
+  lineinfile:
+    path: "{{ server_properties_file }}"
+    regexp: "^max-players="
+    line: "max-players={{ max_players }}"
+
+- name: Set gamemode
+  lineinfile:
+    path: "{{ server_properties_file }}"
+    regexp: "^gamemode="
+    line: "gamemode={{ gamemode }}"
+
+- name: Set difficulty
+  lineinfile:
+    path: "{{ server_properties_file }}"
+    regexp: "^difficulty="
+    line: "difficulty={{ minecraft_server_name }}"
+
+- name: Set online-mode
+  lineinfile:
+    path: "{{ server_properties_file }}"
+    regexp: "^online-mode="
+    line: "online-mode={{ online_mode }}"
+
+- name: Set whitelist on/off
+  lineinfile:
+    path: "{{ server_properties_file }}"
+    regexp: "^white-list="
+    line: "white-list={{ whitelist }}"
+
+- name: Set server port
+  lineinfile:
+    path: "{{ server_properties_file }}"
+    regexp: "^server-port="
+    line: "server-port={{ server_port }}"
+
+- name: Set level name
+  lineinfile:
+    path: "{{ server_properties_file }}"
+    regexp: "^level-name="
+    line: "level-name={{ level_name }}"
+
+- name: Set level seed
+  lineinfile:
+    path: "{{ server_properties_file }}"
+    regexp: "^level-seed="
+    line: "level-seed={{ level_seed }}"
+  when: level_seed is defined

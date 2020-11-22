@@ -1,0 +1,20 @@
+[
+{% for account in operator_accounts %}
+{
+   "permission": "operator",
+   "xuid": "{{ account }}"
+},
+{% endfor %}
+{% for account in member_accounts %}
+{
+    "permission": "member",
+    "xuid": "{{ account }}"
+},
+{% endfor %}
+{% for account in visitor_accounts %}
+{
+    "permission": "visitor",
+    "xuid": "{{ account }}"
+},
+{% endfor %}
+]

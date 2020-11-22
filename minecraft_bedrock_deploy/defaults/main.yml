@@ -10,17 +10,17 @@ difficulty: easy
 online_mode: "true"
 whitelist: "false"
 # server port needs to be unique for each server running on the same host
-server_port: 19133
+server_port: 19134
 level_name: my_level
 level_seed:
 
 # server permission variables
-operator_accounts:
-members:
-visitors:
+#operator_accounts:
+#members:
+#visitors:
 
 # whitelist variables
-whitelist_accounts:
+#whitelist_accounts:
 
 # standard variables
 service_account: minecraft

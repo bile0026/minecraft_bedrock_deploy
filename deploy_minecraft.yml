@@ -1,6 +1,7 @@
 ---
 - name: Minecraft Bedrock Update Deployment
   hosts: all
+  become: true
 
   tasks:
     - import_role:

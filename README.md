@@ -2,14 +2,15 @@
 
 default structure for ansible
 
-Sets up a minecraft bedrock server on specified version on linux systems running systemd. I'm assuming you have some knowledge of how to run Ansible playbooks, and won't go into much detail on that. Minecraft server will run as a service and automatically start on boot. Should work on all RedHat and Debian-based operating systems, including Rasberry Pi. So far only tested on CentOS 8, Ubuntu 20.04, and Raspbian (buster). For updates, check out my update playbook https://github.com/bile0026/minecraft_bedrock_update.
+Sets up a minecraft bedrock server on specified version on linux systems running systemd. I'm assuming you have some knowledge of how to run Ansible playbooks, and won't go into much detail on that. Minecraft server will run as a service and automatically start on boot. Should work on all RedHat and Debian-based operating systems, EXCLUDING Rasberry Pi. So far only tested on CentOS 8, and Ubuntu 20.04. Currently doesn't work on Rasberry Pi, due to ARM CPU architecture. Might work on this down the road, but this requires emulation, which would make it run VERY slow. You're much better off finding an old PC and putting linux on it. For updates, check out my update playbook https://github.com/bile0026/minecraft_bedrock_update.
 
 Run the playbook with this command, substituting your credentials. -k is used to prompt for user password, -K is for the sudo/become password. If you want to use a private key switch out -k (lowercase) with --key-file <path>. This playbook requires become as it will install packages and create services.
+
 ```
 ansible-playbook -i hosts deploy_minecraft.yml -u <username> -k -K
 ```
 
-Set the vars as required if any are different from defaults. Change these in ```minecraft_bedrock_deploy/defaults/main.yml```, or you could setup group_vars/host_vars if you wanted a scaled deployment to multiple servers.
+Set the vars as required if any are different from defaults. Change these in `minecraft_bedrock_deploy/defaults/main.yml`, or you could setup group_vars/host_vars if you wanted a scaled deployment to multiple servers.
 
 ```
 # variables for server customization. See readme for allowed options.

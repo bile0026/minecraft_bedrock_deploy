@@ -8,6 +8,13 @@
     comment: Minecraft service account
   become: true
 
+- name: Add current user to {{ service_account }} group
+  user:
+    name: "{{ ansible_user }}"
+    groups: "{{ service_account }}"
+    append: yes
+  become: true
+
 - name: Create Folders
   file:
     state: directory
@@ -61,12 +68,14 @@
     url: https://minecraft.azureedge.net/bin-linux/bedrock-server-{{ minecraft_version }}.zip
     dest: "{{ tmp_dir }}"
     mode: "0775"
+  become: true
 
 - name: Unpack Minecraft Bedrock
   unarchive:
     src: "{{ tmp_dir }}bedrock-server-{{ minecraft_version }}.zip"
     dest: "{{ unpack_dir }}"
     remote_src: true
+  become: true
 
 - name: Customize server.properties
   include_tasks: server_properties.yml

@@ -2,9 +2,29 @@
 
 default structure for ansible
 
-Sets up a minecraft bedrock server on specified version on linux systems running systemd. Minecraft server will run as a service and automatically start on boot.
+Sets up a minecraft bedrock server on specified version on linux systems running systemd. I'm assuming you have some knowledge of how to run Ansible playbooks, and won't go into much detail on that. Minecraft server will run as a service and automatically start on boot. Should work on all RedHat and Debian-based operating systems, including Rasberry Pi. So far only tested on CentOS 8, Ubuntu 20.04, and Raspbian (buster). For updates, check out my update playbook https://github.com/bile0026/minecraft_bedrock_update.
+
+Run the playbook with this command, substituting your credentials. -k is used to prompt for user password, -K is for the sudo/become password. If you want to use a private key switch out -k (lowercase) with --key-file <path>. This playbook requires become as it will install packages and create services.
+```
+ansible-playbook -i hosts deploy_minecraft.yml -u <username> -k -K
+```
+
+Set the vars as required if any are different from defaults. Change these in ```minecraft_bedrock_deploy/defaults/main.yml```, or you could setup group_vars/host_vars if you wanted a scaled deployment to multiple servers.
 
 ```
+# variables for server customization. See readme for allowed options.
+minecraft_version: 1.16.100.04
+minecraft_server_name: my_server
+max_players: 10
+gamemode: survival
+difficulty: easy
+online_mode: "true"
+whitelist: "false"
+# server port needs to be unique for each server running on the same host
+server_port: 19134
+level_name: my_level
+level_seed:
+
 # server permission variables (list xuids)
 operator_accounts:
   - xuid_1

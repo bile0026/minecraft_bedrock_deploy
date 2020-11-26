@@ -41,6 +41,7 @@
     name:
       - openjdk-11-jdk
       - libcurl4
+      - unzip
     state: present
   become: true
   when: ansible_os_family == 'Debian'

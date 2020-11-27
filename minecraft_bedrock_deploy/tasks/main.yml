@@ -102,11 +102,18 @@
   copy:
     src: "{{ unpack_dir }}"
     dest: "{{ minecraft_install_path }}"
-    owner: minecraft
-    group: minecraft
+    owner: "{{ service_account }}"
+    group: "{{ service_account }}"
     remote_src: true
     force: true
   become: true
+
+- name: Make bedrock_server executable
+  file:
+    path: "{{ minecraft_install_path }}bedrock_server"
+    owner: "{{ service_account }}"
+    group: "{{ service_account }}"
+    mode: +x
 
 - name: Start new minecraft service
   service:

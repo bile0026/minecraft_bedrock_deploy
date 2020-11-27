@@ -2,7 +2,7 @@
 # defaults file for minecraft_bedrock_deploy
 
 # variables for server customization. See readme for allowed options.
-minecraft_version: 1.16.100.04
+minecraft_version: 1.16.101.01
 minecraft_server_name: my_server
 max_players: 10
 gamemode: survival

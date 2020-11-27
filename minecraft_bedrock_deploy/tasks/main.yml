@@ -89,7 +89,7 @@
     src: templates/permissions.json.j2
     dest: "{{ unpack_dir }}permissions.json"
   when:
-    - operator_accounts is defined
+    - account_permissions is defined
 
 - name: Template whitelist.json file
   template:
@@ -121,3 +121,8 @@
     enabled: true
     state: started
   become: true
+
+- name: Cleanup tmp directory
+  file:
+    path: "{{ tmp_dir }}"
+    state: absent

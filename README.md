@@ -4,7 +4,9 @@ Sets up a minecraft bedrock server on specified version on linux systems running
 
 # Current caveats
 * Does not handle opening firewall on system if required
-* Assums SELINUX is disabled on systems that support it
+* Assumes SELINUX is disabled on systems that support it
+
+# How to use this playbook
 
 Run the playbook with this command, substituting your credentials. -k is used to prompt for user password, -K is for the sudo/become password. If you want to use a private key switch out -k (lowercase) with --key-file <path>. This playbook requires become as it will install packages and create services.
 

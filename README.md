@@ -5,6 +5,7 @@ Sets up a minecraft bedrock server on specified version on linux systems running
 # Current caveats
 * Does not handle opening firewall on system if required
 * Assumes SELINUX is disabled on systems that support it. Seems to work with SELINUX set to "enforcing", but needs more testing.
+* jinja templates for permissions.json and whitelist.json need some work on formatting. Might need to remove the final comma from the list of objects.
 
 # How to use this playbook
 

@@ -14,13 +14,21 @@ server_port: 19132
 level_name: my_level
 level_seed:
 
-# server permission variables
-#operator_accounts:
-#members:
-#visitors:
+# server permission variables set xuids. Add more as needed.
+# account_permissions:
+#   - permission: operator
+#     xuid: xxxxxxx
+#   - permission: member
+#     xuid: xxxxxxy
+#   - permission: visitor
+#     xuid: xxxxxxz
 
-# whitelist variables
-#whitelist_accounts:
+# whitelist variables set gamertags. Use "" on true/false. Add more as needed.
+# whitelist_accounts:
+#   - playerlimit: "true"
+#     gamertag: gamertag1
+#   - playerlimit: "false"
+#     gamertag: gamertag2
 
 # standard variables
 service_account: minecraft

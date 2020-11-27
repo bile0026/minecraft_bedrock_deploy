@@ -117,7 +117,7 @@
 
 - name: Start new minecraft service
   service:
-    name: "{{ minecraft_server_name }}_minecraft.service"
+    name: "{{ minecraft_service_name }}"
     enabled: true
     state: started
   become: true

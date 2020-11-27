@@ -1,0 +1,43 @@
+---
+# global vars for deploy and upgrade.
+
+# variables for server customization. See readme for allowed options.
+minecraft_version: 1.16.101.01
+minecraft_server_name: my_server
+max_players: 10
+gamemode: survival
+difficulty: easy
+online_mode: "true"
+whitelist: "false"
+# server port needs to be unique for each server running on the same host
+server_port: 19132
+level_name: my_level
+level_seed:
+
+# server permission variables set xuids. Add more as needed.
+# account_permissions:
+#   - permission: operator
+#     xuid: xxxxxxx
+#   - permission: member
+#     xuid: xxxxxxy
+#   - permission: visitor
+#     xuid: xxxxxxz
+
+# whitelist variables set gamertags. Use "" on true/false. Add more as needed.
+# whitelist_accounts:
+#   - playerlimit: "true"
+#     gamertag: gamertag1
+#   - playerlimit: "false"
+#     gamertag: gamertag2
+
+# standard variables
+service_account: minecraft
+date: "{{ lookup('pipe','date +%Y-%m-%d') }}"
+minecraft_service_name: "{{ minecraft_server_name }}_minecraft.service"
+minecraft_install_path: /etc/{{ minecraft_server_name }}_minecraft/
+backup_folder: /etc/minecraft_backups/
+
+# variable directories
+tmp_dir: /tmp/{{ minecraft_server_name }}_minecraft/
+unpack_dir: /tmp/{{minecraft_server_name}}_minecraft/unpack/
+server_properties_file: "{{ unpack_dir }}server.properties"

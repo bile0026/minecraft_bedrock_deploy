@@ -1,0 +1,15 @@
+---
+# defaults file for minecraft_bedrock_update
+
+# standard variables
+minecraft_version: 1.16.101.01
+minecraft_server_name: my_server
+service_account: minecraft
+date: "{{ lookup('pipe','date +%Y-%m-%d') }}"
+minecraft_service_name: "{{ minecraft_server_name }}_minecraft"
+minecraft_install_path: /etc/{{ minecraft_server_name }}_minecraft/
+backup_folder: /etc/minecraft_backups/
+
+# variable directories
+tmp_dir: /tmp/{{ minecraft_server_name }}_minecraft/
+unpack_dir: /tmp/{{minecraft_server_name}}_minecraft/unpack/

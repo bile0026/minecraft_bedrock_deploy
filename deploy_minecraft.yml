@@ -1,8 +1,18 @@
 ---
 - name: Minecraft Bedrock Update Deployment
   hosts: all
+  gather_facts: true
   become: true
 
   tasks:
+    - name: collect facts about system services
+      service_facts:
+      register: services_state
+
     - import_role:
         name: minecraft_bedrock_deploy
+      when: ansible_facts.services[minecraft_service_name] is not defined
+
+    - import_role:
+        name: minecraft_bedrock_update
+      when: ansible_facts.services[minecraft_service_name] is defined

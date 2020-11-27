@@ -13,7 +13,7 @@
     name: "{{ ansible_user }}"
     groups:
       - "{{ service_account }}"
-    append: yes
+    append: true
   become: true
 
 - name: Create Folders

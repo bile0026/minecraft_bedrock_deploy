@@ -1,5 +1,11 @@
 [
 {% for accounts in whitelist_accounts %}
+{% if loop.index == loop.length %}
+{
+    "ignoresPlayerLimit": false,
+    "name": "{{ account }}"
+}
+{% else %}
 {
     "ignoresPlayerLimit": false,
     "name": "{{ account }}"

@@ -5,7 +5,7 @@ Sets up a minecraft bedrock server on specified version on linux systems running
 # Current caveats
 * Does not handle opening firewall on system if required
 * Assumes SELINUX is disabled on systems that support it. Seems to work with SELINUX set to "enforcing", but needs more testing.
-* jinja templates for permissions.json needs some work on formatting. Might need to remove the final comma from the list of objects.
+* Have to specify version manually in the version variable. Check here for latest version: https://www.minecraft.net/en-us/download/server/bedrock I hope to have this automatically grab the latest version in the future.
 
 # How to use this playbook
 
@@ -16,6 +16,11 @@ ansible-playbook -i hosts deploy_minecraft.yml -u <username> -k -K
 ```
 
 Set the vars as required if any are different from defaults. Change these in `minecraft_bedrock_deploy/defaults/main.yml`, or you could setup group_vars/host_vars if you wanted a scaled deployment to multiple servers.
+
+# Configurable variables
+* gamertags are case-sensitive and might contain spaces. Double check these careully if you want to use the whitelist.
+* as a preventative measure, whitelist is not automatically enabled if whitelist is created. Set the `whitelist` variable to enable it when you are sure it's correct.
+* pay attention to variables that use quote around true/false values. Make sure to preserve the "" or the templates may not work correctly. These are strings, not literal true/false values.
 
 ```
 # variables for server customization. See readme for allowed options.
@@ -31,19 +36,19 @@ server_port: 19134
 level_name: my_level
 level_seed:
 
-# server permission variables (list xuids)
-operator_accounts:
-  - xuid_1
-  - xuid_2
-members:
-  - xuid_1
-  - xuid_2
-visitors:
-  - xuid_1
-  - xuid_2
+# server permission variables set xuids. Add more as needed.
+account_permissions:
+  - permission: operator
+    xuid: xxxxxxx
+  - permission: member
+    xuid: xxxxxxy
+  - permission: visitor
+    xuid: xxxxxxz
 
-# whitelist variables (list gamertags)
+# whitelist variables set gamertags. Use "" on true/false. Add more as needed
 whitelist_accounts:
-  - gamertag_1
-  - gamertag_2
+  - playerlimit: "true"
+    gamertag: gamertag1
+  - playerlimit: "false"
+    gamertag: gamertag2
 ```

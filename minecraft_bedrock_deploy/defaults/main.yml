@@ -10,7 +10,7 @@ difficulty: easy
 online_mode: "true"
 whitelist: "false"
 # server port needs to be unique for each server running on the same host
-server_port: 19134
+server_port: 19132
 level_name: my_level
 level_seed:
 

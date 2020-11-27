@@ -23,13 +23,17 @@ Set the vars as required if any are different from defaults. Change these in `gr
 * pay attention to variables that use quote around true/false values. Make sure to preserve the "" or the templates may not work correctly. These are strings, not literal true/false values.
 
 ```
-# variables for server customization. See readme for allowed options.
+# current latest version. Get from https://www.minecraft.net/en-us/download/server/bedrock
 minecraft_version: 1.16.100.04
+# will be used to name not only the server but folders and services.
 minecraft_server_name: my_server
+# this setting will depend on resource levels of your host machine. More players = more resources.
 max_players: 10
 gamemode: survival
 difficulty: easy
+# users must log in to their microsoft account to connect
 online_mode: "true"
+# enables/enforces the whitelist on the server
 whitelist: "false"
 # server port needs to be unique for each server running on the same host
 server_port: 19134

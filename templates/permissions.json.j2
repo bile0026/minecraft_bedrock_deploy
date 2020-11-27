@@ -1,20 +1,15 @@
 [
-{% for account in operator_accounts %}
+{% for account in account_permissions %}
+{% if loop.index == loop.length %}
 {
-   "permission": "operator",
-   "xuid": "{{ account }}"
-},
-{% endfor %}
-{% for account in member_accounts %}
+   "permission": "{{ account.permission }}",
+   "xuid": "{{ account.xuid }}"
+}
+{% else %}
 {
-    "permission": "member",
-    "xuid": "{{ account }}"
+   "permission": "{{ account.permission }}",
+   "xuid": "{{ account.xuid }}"
 },
-{% endfor %}
-{% for account in visitor_accounts %}
-{
-    "permission": "visitor",
-    "xuid": "{{ account }}"
-},
+{% endif %}
 {% endfor %}
 ]

@@ -1,14 +1,15 @@
 [
-{% for accounts in whitelist_accounts %}
+{% for account in whitelist_accounts %}
 {% if loop.index == loop.length %}
 {
-    "ignoresPlayerLimit": false,
-    "name": "{{ account }}"
+    "ignoresPlayerLimit": "{{ account.playerlimit }}",
+    "name": "{{ account.gamertag }}"
 }
 {% else %}
 {
-    "ignoresPlayerLimit": false,
-    "name": "{{ account }}"
+    "ignoresPlayerLimit": "{{ account.playerlimit }}",
+    "name": "{{ account.gamertag }}"
 },
+{% endif %}
 {% endfor %}
 ]

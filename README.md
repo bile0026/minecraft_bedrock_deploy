@@ -4,7 +4,7 @@ Sets up a minecraft bedrock server on specified version on linux systems running
 
 # Current caveats
 * Does not handle opening firewall on system if required
-* Assumes SELINUX is disabled on systems that support it
+* Assumes SELINUX is disabled on systems that support it. Seems to work with SELINUX set to "enforcing", but needs more testing.
 
 # How to use this playbook
 

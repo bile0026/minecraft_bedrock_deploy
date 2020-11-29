@@ -15,6 +15,13 @@ Run the playbook with this command, substituting your credentials. -k is used to
 ansible-playbook -i hosts deploy_minecraft.yml -u <username> -k -K
 ```
 
+# If installing bedrock connect
+* first you'll need to install the mysql role by @geerlingguy (or your own mysql setup), and include the requisite variable configurations in group_vars/all.yml. Also, bedrock connect needs to run on port 19132, you have to set bedrock_server to run on a different port.
+
+```
+ansible-galaxy role install -r roles/requirements.yml
+```
+
 Set the vars as required if any are different from defaults. Change these in `group_vars/all.yml', or setup specific group/host vars if you are looking for a scaled deployment.
 
 # Configurable variables

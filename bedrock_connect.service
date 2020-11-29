@@ -1,0 +1,11 @@
+[Unit]
+Description=Bedrock Connect Service
+After=network.target mariadb.service
+
+[Service]
+User=minecraft
+ExecStart=/bin/sh /etc/bedrock_connect/start_bedrockconnect
+Restart=always
+
+[Install]
+WantedBy = multi-user.target

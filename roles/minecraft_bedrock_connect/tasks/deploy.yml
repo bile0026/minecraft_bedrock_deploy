@@ -1,0 +1,64 @@
+---
+# deploy file for minecraft_bedrock_connect
+
+- name: Create Folders
+  file:
+    state: directory
+    path: /etc/bedrock_connect
+    owner: "{{ service_account }}"
+    group: "{{ service_account }}"
+    mode: "0775"
+
+- name: Get latest bedrock connect release .jar file
+  uri:
+    url: https://api.github.com/repos/Pugmatt/BedrockConnect/releases/latest
+    return_content: true
+  register: json_response
+
+- name: Download the bedrock connect jar file
+  get_url:
+    url: "{{ json_response.json.assets[0].browser_download_url }}"
+    dest: /etc/bedrock_connect/{{ json_response.json.assets[0].name }}
+    owner: "{{ service_account }}"
+    group: "{{ service_account }}"
+    mode: "0775"
+
+- name: Install Java Packages RedHat
+  yum:
+    name: java-11-openjdk
+    state: present
+  become: true
+  when: ansible_os_family == 'RedHat'
+
+- name: Install Java Packages Debian
+  apt:
+    name:
+      - openjdk-11-jdk
+    state: present
+  become: true
+  when: ansible_os_family == 'Debian'
+
+- name: Create bedrock connect service script
+  template:
+    src: templates/bedrock_connect_script.j2
+    dest: /etc/bedrock_connect/start_bedrockconnect
+    owner: "{{ service_account }}"
+    mode: "0775"
+
+- name: Create bedrock connect service
+  template:
+    src: templates/bedrock_connect_service.j2
+    dest: /etc/systemd/system/bedrock_connect.service
+  register: create_service
+
+- name: reload systemd
+  command: systemctl daemon-reload
+  become: true
+  when: create_service.changed
+
+- name: Start new bedrock connect service
+  service:
+    name: bedrock_connect.service
+    enabled: true
+    state: started
+  become: true

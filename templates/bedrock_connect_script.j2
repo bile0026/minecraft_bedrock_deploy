@@ -1,0 +1,2 @@
+cd /etc/bedrock_connect
+java -jar BedrockConnect-1.0-SNAPSHOT.jar mysql_host=localhost mysql_db={{ mysql_databases[0]['name'] }} mysql_pass={{ mysql_users[0]['password']}} mysql_user={{ mysql_users[0]['name']}} server_limit=100

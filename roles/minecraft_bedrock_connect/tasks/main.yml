@@ -1,2 +1,10 @@
 ---
 # tasks file for minecraft_bedrock_connect
+
+- name: Deploy bedrock connect
+  include_tasks: deploy.yml
+  when: ansible_facts.services['bedrock_connect.service'] is not defined
+
+- name: Upgrade bedrock connect
+  include_tasks: upgrade.yml
+  when: ansible_facts.services['bedrock_connect.service'] is defined

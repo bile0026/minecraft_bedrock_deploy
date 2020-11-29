@@ -1,0 +1,26 @@
+---
+# upgrade file for minecraft_bedrock_connect
+
+- name: Stop the bedrock connect service
+  service:
+    name: bedrock_connect.service
+    state: stopped
+
+- name: Get latest bedrock connect release .jar file
+  uri:
+    url: https://api.github.com/repos/Pugmatt/BedrockConnect/releases/latest
+    return_content: true
+  register: json_response
+
+- name: Download the bedrock connect jar file
+  get_url:
+    url: "{{ json_response.json.assets[0].browser_download_url }}"
+    dest: /etc/bedrock_connect/{{ json_response.json.assets[0].name }}
+    owner: "{{ service_account }}"
+    group: "{{ service_account }}"
+    mode: "0775"
+
+- name: Start new bedrock connect service
+  service:
+    name: bedrock_connect.service
+    state: started

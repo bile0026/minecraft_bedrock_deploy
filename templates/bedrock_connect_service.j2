@@ -1,0 +1,15 @@
+[Unit]
+Description=Bedrock Connect Service
+{% if ansible_os_family == 'Debian' %}
+After=network.target mysqld.service
+{% else %}
+After=network.target mariadb.service
+{% endif %}
+
+[Service]
+User={{ service_account }}
+ExecStart=/bin/sh /etc/bedrock_connect/start_bedrockconnect
+Restart=always
+
+[Install]
+WantedBy = multi-user.target

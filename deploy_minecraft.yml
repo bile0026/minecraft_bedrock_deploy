@@ -10,6 +10,14 @@
       register: services_state
 
     - import_role:
+        name: minecraft_bedrock_deploy
+      when: ansible_facts.services[minecraft_service_name] is not defined
+
+    - import_role:
+        name: minecraft_bedrock_update
+      when: ansible_facts.services[minecraft_service_name] is defined
+
+    - import_role:
         name: geerlingguy.mysql
       when:
         - install_bedrock_connect
@@ -18,11 +26,3 @@
     - import_role:
         name: minecraft_bedrock_connect
       when: install_bedrock_connect
-
-    - import_role:
-        name: minecraft_bedrock_deploy
-      when: ansible_facts.services[minecraft_service_name] is not defined
-
-    - import_role:
-        name: minecraft_bedrock_update
-      when: ansible_facts.services[minecraft_service_name] is defined

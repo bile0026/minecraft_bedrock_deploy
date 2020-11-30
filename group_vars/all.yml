@@ -11,6 +11,8 @@ online_mode: "true"
 whitelist: "false"
 # server port needs to be unique for each server running on the same host
 server_port: 19133
+# ipv6 server port needs to be different than ipv4 server port
+ipv6_server_port: 19134
 level_name: my_level
 level_seed:
 

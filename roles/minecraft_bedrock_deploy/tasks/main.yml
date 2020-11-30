@@ -6,7 +6,6 @@
     name: minecraft
     state: present
     comment: Minecraft service account
-  become: true
 
 - name: Add current user to {{ service_account }} group
   user:
@@ -14,7 +13,6 @@
     groups:
       - "{{ service_account }}"
     append: true
-  become: true
 
 - name: Create Folders
   file:
@@ -27,13 +25,13 @@
     - "{{ tmp_dir }}"
     - "{{ unpack_dir }}"
     - "{{ minecraft_install_path }}"
-  become: true
 
 - name: Install Packages RedHat
   yum:
-    name: java-11-openjdk
+    name:
+      - java-11-openjdk
+      - unzip
     state: present
-  become: true
   when: ansible_os_family == 'RedHat'
 
 - name: Install Packages Debian
@@ -43,14 +41,13 @@
       - libcurl4
       - unzip
     state: present
-  become: true
   when: ansible_os_family == 'Debian'
 
 - name: Create minecraft service
   template:
     src: templates/minecraft_service.j2
     dest: "/etc/systemd/system/{{ minecraft_server_name }}_minecraft.service"
-  become: true
+    mode: +x
   register: create_service
 
 - name: Create server start script
@@ -60,11 +57,9 @@
     owner: "{{ service_account }}"
     group: "{{ service_account }}"
     mode: +x
-  become: true
 
 - name: reload systemd
   command: systemctl daemon-reload
-  become: true
   when: create_service.changed
 
 - name: Download Minecraft Bedrock {{ minecraft_version }}
@@ -72,14 +67,12 @@
     url: https://minecraft.azureedge.net/bin-linux/bedrock-server-{{ minecraft_version }}.zip
     dest: "{{ tmp_dir }}"
     mode: "0775"
-  become: true
 
 - name: Unpack Minecraft Bedrock
   unarchive:
     src: "{{ tmp_dir }}bedrock-server-{{ minecraft_version }}.zip"
     dest: "{{ unpack_dir }}"
     remote_src: true
-  become: true
 
 - name: Customize server.properties
   include_tasks: server_properties.yml
@@ -106,7 +99,6 @@
     group: "{{ service_account }}"
     remote_src: true
     force: true
-  become: true
 
 - name: Make bedrock_server executable
   file:
@@ -115,12 +107,15 @@
     group: "{{ service_account }}"
     mode: +x
 
+- name: reload systemd
+  command: systemctl daemon-reload
+  when: create_service.changed
+
 - name: Start new minecraft service
   service:
     name: "{{ minecraft_service_name }}"
     enabled: true
     state: started
-  become: true
 
 - name: Cleanup tmp directory
   file:

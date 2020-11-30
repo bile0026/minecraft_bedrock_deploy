@@ -35,11 +35,17 @@
     regexp: "^white-list="
     line: "white-list={{ whitelist }}"
 
-- name: Set server port
+- name: Set IPv4 server port
   lineinfile:
     path: "{{ server_properties_file }}"
     regexp: "^server-port="
     line: "server-port={{ server_port }}"
+
+- name: Set IPv6 server port
+  lineinfile:
+    path: "{{ server_properties_file }}"
+    regexp: "^server-portv6="
+    line: "server-portv6={{ ipv6_server_port }}"
 
 - name: Set level name
   lineinfile:

@@ -1,5 +1,3 @@
-molecule/
 molecule-venv/
 hosts
 test_*
-.yamllint

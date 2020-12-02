@@ -1,19 +1,6 @@
 ---
 # tasks file for minecraft_bedrock_deploy
 
-- name: Create minecraft user
-  user:
-    name: minecraft
-    state: present
-    comment: Minecraft service account
-
-- name: Add current user to {{ service_account }} group
-  user:
-    name: "{{ ansible_user }}"
-    groups:
-      - "{{ service_account }}"
-    append: true
-
 - name: Create Folders
   file:
     state: directory
@@ -26,32 +13,16 @@
     - "{{ unpack_dir }}"
     - "{{ minecraft_install_path }}"
 
-- name: Install Packages RedHat
-  yum:
-    name:
-      - java-11-openjdk
-      - unzip
-    state: present
-  when: ansible_os_family == 'RedHat'
-
-- name: Install Packages Debian
-  apt:
-    name:
-      - openjdk-11-jdk
-      - libcurl4
-      - unzip
-    state: present
-  when: ansible_os_family == 'Debian'
-
-- name: Modify firewalld configuration for bedrock server ports
-  ansible.posix.firewalld:
-    port: item
-    permanent: yes
-    state: enabled
-  with_items:
-    - "{{ server_port }}/udp"
-    - "{{ ipv6_server_port }}/udp"
-  when: ansible_os_family == 'RedHat'
+# FIXME
+# - name: Modify firewalld configuration for bedrock server ports
+#   ansible.posix.firewalld:
+#     port: item
+#     permanent: yes
+#     state: enabled
+#   with_items:
+#     - "{{ server_port }}/udp"
+#     - "{{ ipv6_server_port }}/udp"
+#   when: ansible_os_family == 'RedHat'
 
 - name: Create minecraft service
   template:

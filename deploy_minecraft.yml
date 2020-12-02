@@ -9,13 +9,52 @@
       service_facts:
       register: services_state
 
-    - import_role:
-        name: minecraft_bedrock_deploy
-      when: ansible_facts.services[minecraft_service_name] is not defined
+    - name: Disable SELinux
+      ansible.posix.selinux:
+        state: disabled
+      when: ansible_os_family == 'RedHat'
+      register: reboot
 
-    - import_role:
-        name: minecraft_bedrock_update
-      when: ansible_facts.services[minecraft_service_name] is defined
+    - name: Disable firewalld
+      service:
+        name: firewalld
+        state: stopped
+        enabled: false
+      when: ansible_os_family == 'RedHat'
+
+    - name: Reboot when required
+      reboot:
+      when: reboot.reboot_required is true
+
+    - name: Create minecraft user
+      user:
+        name: "{{ service_account }}"
+        state: present
+        comment: Minecraft service account
+
+    - name: Add current user to {{ service_account }} group
+      user:
+        name: "{{ ansible_user }}"
+        groups:
+          - "{{ service_account }}"
+        append: true
+
+    - name: Install Packages RedHat
+      yum:
+        name:
+          - java-11-openjdk
+          - unzip
+        state: present
+      when: ansible_os_family == 'RedHat'
+
+    - name: Install Packages Debian
+      apt:
+        name:
+          - openjdk-11-jdk
+          - libcurl4
+          - unzip
+        state: present
+      when: ansible_os_family == 'Debian'
 
     - import_role:
         name: geerlingguy.mysql
@@ -26,3 +65,11 @@
     - import_role:
         name: minecraft_bedrock_connect
       when: install_bedrock_connect
+
+    - import_role:
+        name: minecraft_bedrock_deploy
+      when: ansible_facts.services[minecraft_service_name] is not defined
+
+    - import_role:
+        name: minecraft_bedrock_update
+      when: ansible_facts.services[minecraft_service_name] is defined

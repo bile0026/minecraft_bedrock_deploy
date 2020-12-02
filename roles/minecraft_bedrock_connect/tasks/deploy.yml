@@ -23,21 +23,6 @@
     group: "{{ service_account }}"
     mode: "0775"
 
-- name: Install Java Packages RedHat
-  yum:
-    name: java-11-openjdk
-    state: present
-  become: true
-  when: ansible_os_family == 'RedHat'
-
-- name: Install Java Packages Debian
-  apt:
-    name:
-      - openjdk-11-jdk
-    state: present
-  become: true
-  when: ansible_os_family == 'Debian'
-
 - name: Modify firewalld configuration for bedrock connect ports
   ansible.posix.firewalld:
     port: 19132/udp

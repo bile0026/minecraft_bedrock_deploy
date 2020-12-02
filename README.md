@@ -9,8 +9,8 @@ git checkout tag/<tag_name>
 ```
 
 # Current caveats
-* Does not handle opening firewall on system if required
-* Assumes SELINUX is disabled on systems that support it. Seems to work with SELINUX set to "enforcing", but needs more testing.
+* Currently just disables firewalld on RedHat-based servers. Working on modifying instead.
+* Disables SELINUX on systems running it. Working on modificiations to allow instead.
 * Have to specify version manually in the version variable. Check here for latest version: https://www.minecraft.net/en-us/download/server/bedrock I hope to have this automatically grab the latest version in the future.
 
 # How to use this playbook

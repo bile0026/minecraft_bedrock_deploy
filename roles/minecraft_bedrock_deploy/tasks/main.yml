@@ -43,6 +43,16 @@
     state: present
   when: ansible_os_family == 'Debian'
 
+- name: Modify firewalld configuration for bedrock server ports
+  ansible.posix.firewalld:
+    port: item
+    permanent: yes
+    state: enabled
+  with_items:
+    - "{{ server_port }}/udp"
+    - "{{ ipv6_server_port }}/udp"
+  when: ansible_os_family == 'RedHat'
+
 - name: Create minecraft service
   template:
     src: templates/minecraft_service.j2

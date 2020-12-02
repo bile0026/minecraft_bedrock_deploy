@@ -2,6 +2,12 @@
 
 Sets up a minecraft bedrock server on specified version on linux systems running systemd. I'm assuming you have some knowledge of how to run Ansible playbooks, and won't go into much detail on that. Minecraft server will run as a service and automatically start on boot. Should work on all RedHat and Debian-based operating systems, EXCLUDING Rasberry Pi. So far only tested on CentOS 8, and Ubuntu 20.04. Currently doesn't work on Rasberry Pi, due to ARM CPU architecture. Might work on this down the road, but this requires emulation, which would make it run VERY slow. You're much better off finding an old PC and putting linux on it. If the specified minecraft service already exists the minecraft_server_update roll will be called and will upgrade the server without any changes to settings. Update role will put a backup of the server into the `backup_folder` prior to pushing new files in.
 
+* Make sure to deploy from a tag, not from master branch. Tags should be stable, master branch should be considered development and may not always be in a stable state.
+```
+git clone <repo_url>
+git checkout tag/<tag_name>
+```
+
 # Current caveats
 * Does not handle opening firewall on system if required
 * Assumes SELINUX is disabled on systems that support it. Seems to work with SELINUX set to "enforcing", but needs more testing.

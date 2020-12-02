@@ -38,6 +38,15 @@
   become: true
   when: ansible_os_family == 'Debian'
 
+- name: Modify firewalld configuration for bedrock connect ports
+  ansible.posix.firewalld:
+    port: 19132/udp
+    permanent: yes
+    state: enabled
+  when:
+    - ansible_os_family == 'RedHat'
+    - install_bedrock_connect is true
+
 - name: Create bedrock connect service script
   template:
     src: templates/bedrock_connect_script.j2

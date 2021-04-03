@@ -8,6 +8,9 @@ git clone <repo_url>
 git checkout tag/<tag_name>
 ```
 
+# Current Issues
+* If updating from any version prior to 1.16.210.05 to a newer version, some of the server.properties files changed regarding the "server-authoritative" options. You'll need to update these manually for now until the upgrade job is updated to handle this. New deployments should not be affected.
+
 # Current caveats
 * Currently just disables firewalld on RedHat-based servers. Working on modifying instead.
 * Disables SELINUX on systems running it. Working on modificiations to allow instead.

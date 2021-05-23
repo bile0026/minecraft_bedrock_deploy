@@ -1,5 +1,6 @@
 ---
 # tasks file for minecraft_bedrock_update
+
 - name: Create folders
   file:
     state: directory
@@ -67,3 +68,16 @@
   file:
     path: "{{ tmp_dir }}"
     state: absent
+
+- name: Check Service Status
+  service_facts:
+  register: services_state
+
+- name: Confirm Minecraft Server Service is running
+  assert:
+    that: services_state.ansible_facts.services["{{ minecraft_service_name }}"].state == "running"
+
+- name: Confirm Bedrock Connect Service is running
+  assert:
+    that: services_state.ansible_facts.services['bedrock_connect.service'].state == "running"
+  when: services_state.ansible_facts.services['bedrock_connect.service']

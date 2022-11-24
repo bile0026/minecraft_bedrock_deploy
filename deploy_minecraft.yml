@@ -24,7 +24,7 @@
 
     - name: Reboot when required
       reboot:
-      when: reboot.reboot_required is true
+      when: reboot.reboot_required
 
     - name: Create minecraft user
       user:

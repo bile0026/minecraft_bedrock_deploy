@@ -1,3 +1,4 @@
 molecule-venv/
 hosts
 test_*
+host_vars/

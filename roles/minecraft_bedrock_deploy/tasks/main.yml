@@ -45,7 +45,7 @@
 
 - name: Download Minecraft Bedrock {{ minecraft_version }}
   get_url:
-    url: https://minecraft.azureedge.net/bin-linux/bedrock-server-{{ minecraft_version }}.zip
+    url: https://www.minecraft.net/bedrockdedicatedserver/bin-linux/bedrock-server-{{ minecraft_version }}.zip
     dest: "{{ tmp_dir }}"
     mode: "0775"
 
